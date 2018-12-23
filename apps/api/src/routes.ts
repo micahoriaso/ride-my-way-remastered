@@ -2,12 +2,7 @@ import { UserController } from "./controller/UserController";
 import { TestController } from "./controller/TestController";
 
 export const Routes = [
-  {
-    method: "get",
-    route: "/users",
-    controller: UserController,
-    action: "all"
-  },
+  { method: "get", route: "/users", controller: UserController, action: "all" },
   {
     method: "get",
     route: "/users/:id",
@@ -22,14 +17,9 @@ export const Routes = [
   },
   {
     method: "delete",
-    route: "/users",
+    route: "/users/:id",
     controller: UserController,
     action: "remove"
   },
-  {
-    method: "get",
-    route: "/api",
-    controller: TestController,
-    action: "all"
-  }
+  { method: "get", route: "/api", controller: TestController, action: "all" }
 ];
