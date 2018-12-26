@@ -20,6 +20,11 @@
     "start": "yarn run watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "ts-node src/index.ts",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "migrate:create": "ts-node ./node_modules/.bin/typeorm migration:create",
+    "migrate:generate": "ts-node ./node_modules/.bin/typeorm migration:generate",
+    "migrate:run": "ts-node ./node_modules/.bin/typeorm migration:run",
+    "migrate:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
+    "schema:drop": "ts-node ./node_modules/.bin/typeorm schema:drop"
   }
 }

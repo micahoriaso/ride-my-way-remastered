@@ -40,22 +40,6 @@ createConnection()
     // start express server
     app.listen(port);
 
-    // insert new users for test
-    // await connection.manager.save(
-    //   connection.manager.create(User, {
-    //     firstName: "Timber",
-    //     lastName: "Saw",
-    //     age: 27
-    //   })
-    // );
-    // await connection.manager.save(
-    //   connection.manager.create(User, {
-    //     firstName: "Phantom",
-    //     lastName: "Assassin",
-    //     age: 24
-    //   })
-    // );
-
     console.log(
       "Express server has started on port 5000. Open http://localhost:5000/api to see results"
     );
