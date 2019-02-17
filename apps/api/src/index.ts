@@ -1,8 +1,9 @@
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-import express, { Request, Response } from "express";
-import bodyParser from "body-parser";
-import { Routes } from "./routes";
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
+import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser';
+import { Routes } from './routes';
+import { handle404 } from './middlewares/404';
 
 createConnection()
   .then(async connection => {
@@ -37,11 +38,29 @@ createConnection()
     // setup express app here
     // ...
 
+    // apply middlewares
+    app.use(handle404);
     // start express server
     app.listen(port);
 
+    // insert new users for test
+    // await connection.manager.save(
+    //   connection.manager.create(User, {
+    //     firstName: "Timber",
+    //     lastName: "Saw",
+    //     age: 27
+    //   })
+    // );
+    // await connection.manager.save(
+    //   connection.manager.create(User, {
+    //     firstName: "Phantom",
+    //     lastName: "Assassin",
+    //     age: 24
+    //   })
+    // );
+
     console.log(
-      "Express server has started on port 5000. Open http://localhost:5000/api to see results"
+      'Express server has started on port 5000. Open http://localhost:5000 to see results'
     );
   })
   .catch(error => console.log(error));

@@ -2,15 +2,18 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  TableInheritance
-} from "typeorm";
+  TableInheritance,
+  BeforeInsert
+} from 'typeorm';
+import bcrypt from 'bcrypt';
+import { IsEmail, Length, MinLength } from 'class-validator';
 
 @Entity()
 @TableInheritance({
-  column: { name: "type", type: "varchar" }
+  column: { name: 'type', type: 'varchar' }
 })
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: true })
@@ -20,11 +23,27 @@ export class User {
   last_name?: string;
 
   @Column()
+  @IsEmail(
+    {},
+    {
+      message: 'Please enter a valid email'
+    }
+  )
   email: string;
 
   @Column()
+  @Length(10, 10, { message: 'Phone number must be 10 digits' })
   phone: string;
 
   @Column()
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
+
+  @BeforeInsert()
+  hashPassword() {
+    this.password = bcrypt.hashSync(
+      this.password,
+      Number(process.env.SALT_ROUNDS)
+    );
+  }
 }
