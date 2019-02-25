@@ -22,7 +22,7 @@ export class User {
   @Column({ nullable: true })
   last_name?: string;
 
-  @Column()
+  @Column({ unique: true })
   @IsEmail(
     {},
     {
@@ -31,7 +31,7 @@ export class User {
   )
   email: string;
 
-  @Column()
+  @Column({ unique: true })
   @Length(10, 10, { message: 'Phone number must be 10 digits' })
   phone: string;
 

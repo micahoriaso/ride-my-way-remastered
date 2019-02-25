@@ -54,12 +54,13 @@ export class CarController {
     const { body } = request;
     let car = new Car();
     let carRepository = getRepository(Car);
-    car.id = body.id;
+    car.registration = body.registration;
     car.model = body.model;
     car.capacity = body.capacity;
     try {
       const errors = await validate(car, {
-        validationError: { target: false }
+        validationError: { target: false },
+        groups: ['create']
       });
       if (errors.length > 0) {
         return formatResponse({
@@ -86,6 +87,35 @@ export class CarController {
     try {
       await this.carRepository.remove(carToRemove);
       return formatResponse({ status: 200, data: 'Car deleted', response });
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async update(request: Request, response: Response, next: NextFunction) {
+    const { body } = request;
+    const carToUpdate = await this.carRepository.findOne(request.params.id);
+    carToUpdate.registration = body.registration;
+    carToUpdate.model = body.model;
+    carToUpdate.capacity = body.capacity;
+    try {
+      const errors = await validate(carToUpdate, {
+        validationError: { target: false },
+        skipMissingProperties: true,
+        groups: ['update']
+      });
+      if (errors.length > 0) {
+        return formatResponse({
+          status: 400,
+          error: {
+            errors
+          },
+          response
+        });
+      } else {
+        await this.carRepository.save(carToUpdate);
+        return formatResponse({ status: 201, data: 'Car updated', response });
+      }
     } catch (error) {
       return error;
     }

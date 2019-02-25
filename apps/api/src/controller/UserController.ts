@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../entity/User';
 import { formatResponse } from '../helpers';
+import { validate } from 'class-validator';
 
 export class UserController {
   private userRepository = getRepository(User);
@@ -53,6 +54,35 @@ export class UserController {
     try {
       await this.userRepository.remove(userToRemove);
       return formatResponse({ status: 200, data: 'User deleted', response });
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async update(request: Request, response: Response, next: NextFunction) {
+    const { body } = request;
+    const userToUpdate = await this.userRepository.findOne(request.params.id);
+    userToUpdate.first_name = body.first_name;
+    userToUpdate.last_name = body.last_name;
+    userToUpdate.email = body.email;
+    try {
+      const errors = await validate(userToUpdate, {
+        validationError: { target: false },
+        skipMissingProperties: true,
+        groups: ['update']
+      });
+      if (errors.length > 0) {
+        return formatResponse({
+          status: 400,
+          error: {
+            errors
+          },
+          response
+        });
+      } else {
+        await this.userRepository.save(userToUpdate);
+        return formatResponse({ status: 201, data: 'User updated', response });
+      }
     } catch (error) {
       return error;
     }

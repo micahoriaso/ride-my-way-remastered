@@ -52,5 +52,11 @@ export const Routes = [
     route: '/cars/:id',
     controller: CarController,
     action: 'remove'
+  },
+  {
+    method: 'put',
+    route: '/cars/:id',
+    controller: CarController,
+    action: 'update'
   }
 ];

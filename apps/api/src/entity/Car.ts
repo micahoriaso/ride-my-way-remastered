@@ -1,13 +1,19 @@
-import { Entity, PrimaryColumn, Column, getRepository } from 'typeorm';
-import { IsDefined, Validate } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsDefined, Validate, Matches, Min, Max } from 'class-validator';
 import { IsUnique } from '../validators/car';
 
 @Entity()
 export class Car {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ unique: true })
   @IsDefined({ message: 'Registration is required' })
-  @Validate(IsUnique)
-  id: string;
+  @Matches(/K([A-Z]{2})\s[0-9]{3}[A-Z]{1}$/, {
+    message: 'Registration must take the format KXX 000X e.g. KBY 987H'
+  })
+  @Validate(IsUnique, { groups: ['create'] })
+  registration: string;
 
   @Column()
   @IsDefined({ message: 'Model is required' })
@@ -15,5 +21,7 @@ export class Car {
 
   @Column()
   @IsDefined({ message: 'Capacity is required' })
+  @Min(1, { message: 'Capacity must be more than 0' })
+  @Max(10, { message: 'Capacity cannot be more than 10' })
   capacity: number;
 }

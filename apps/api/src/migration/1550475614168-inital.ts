@@ -1,12 +1,12 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class initial1545589508919 implements MigrationInterface {
+export class inital1550475614168 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
-      `CREATE TABLE "car" ("id" character varying NOT NULL, "model" character varying NOT NULL, "capacity" integer NOT NULL, CONSTRAINT "PK_55bbdeb14e0b1d7ab417d11ee6d" PRIMARY KEY ("id"))`
+      `CREATE TABLE "car" ("id" SERIAL NOT NULL, "registration" character varying NOT NULL, "model" character varying NOT NULL, "capacity" integer NOT NULL, CONSTRAINT "UQ_00a2022fc3be9eaffa88ffbb07e" UNIQUE ("registration"), CONSTRAINT "PK_55bbdeb14e0b1d7ab417d11ee6d" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
-      `CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "first_name" character varying, "last_name" character varying, "email" character varying NOT NULL, "phone" character varying NOT NULL, "password" character varying NOT NULL, "car" character varying, "type" character varying NOT NULL, "carId" character varying, CONSTRAINT "REL_bf812cb2c6baba866991d9781c" UNIQUE ("carId"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`
+      `CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "first_name" character varying, "last_name" character varying, "email" character varying NOT NULL, "phone" character varying NOT NULL, "password" character varying NOT NULL, "car" character varying, "type" character varying NOT NULL, "carId" integer, CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "UQ_8e1f623798118e629b46a9e6299" UNIQUE ("phone"), CONSTRAINT "REL_bf812cb2c6baba866991d9781c" UNIQUE ("carId"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_31ef2b4d30675d0c15056b7f6e" ON "user"  ("type") `
