@@ -10,6 +10,12 @@ Ride-My-Way App is a carpooling application that provides drivers with the abili
 - \$ yarn install:all
 - \$ yarn start
 
+## Database
+
+- Postgres10.5
+
+- create database `ridemyway`
+
 ## Migrations
 
 ### Runnning migrations
