@@ -15,16 +15,16 @@ Ride-My-Way App is a carpooling application that provides drivers with the abili
 ### Runnning migrations
 
 - \$ cd apps/api
-- \$ yarn run migrate:run
+- \$ yarn migrate:run
 
 ### Generating migrations
 
-- \$ yarn run migrate:generate -n <migration_name>
+- \$ yarn migrate:generate -n <migration_name>
 
 ### Creating migrations
 
-- \$ yarn run migrate:create
+- \$ yarn migrate:create
 
 ### Reverting migrations
 
-- \$ yarn run migrate:revert
+- \$ yarn migrate:revert
