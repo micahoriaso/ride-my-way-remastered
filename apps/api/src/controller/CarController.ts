@@ -4,19 +4,31 @@ import { validate } from 'class-validator';
 
 import { Car } from '../entity/Car';
 import { formatResponse } from '../helpers';
+import { getCurrentUser } from '../services/jwt';
+
+interface Authenticated {
+  decoded: any;
+}
 
 export class CarController {
   private carRepository = getRepository(Car);
 
-  async all(request: Request, response: Response, next: NextFunction) {
+  async all(
+    request: Request & Authenticated,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
       const cars = await this.carRepository.find();
       if (cars.length > 0) {
         return formatResponse({ status: 200, data: cars, response });
       }
+
       return formatResponse({
         status: 404,
-        data: { message: 'No cars found' },
+        data: {
+          message: 'No cars found'
+        },
         response
       });
     } catch (error) {
@@ -50,13 +62,20 @@ export class CarController {
     }
   }
 
-  async save(request: Request, response: Response, next: NextFunction) {
+  async save(
+    request: Request & Authenticated,
+    response: Response,
+    next: NextFunction
+  ) {
     const { body } = request;
+    const currentUser = await getCurrentUser(request.decoded);
+
     let car = new Car();
     let carRepository = getRepository(Car);
     car.registration = body.registration;
     car.model = body.model;
     car.capacity = body.capacity;
+    car.owner = currentUser;
     try {
       const errors = await validate(car, {
         validationError: { target: false },

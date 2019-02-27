@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import { Routes } from './routes';
 import { handle404 } from './middlewares/404';
+import { checkJWT, passMiddleware } from './services/jwt';
 
 createConnection()
   .then(async connection => {
@@ -11,12 +12,14 @@ createConnection()
     const app = express();
     const port = process.env.PORT || 5000;
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     // register express routes from defined application routes
     Routes.forEach(route => {
       (app as any)[route.method](
         route.route,
-        (req: Request, res: Response, next: Function) => {
+        route.authenticate ? checkJWT : passMiddleware,
+        (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](
             req,
             res,

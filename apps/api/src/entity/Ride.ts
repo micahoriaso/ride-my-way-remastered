@@ -6,9 +6,9 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany
-} from "typeorm";
-import { Driver } from "./Driver";
-import { RideRequest } from "./RideRequest";
+} from 'typeorm';
+import { User } from './User';
+import { RideRequest } from './RideRequest';
 
 @Entity()
 export class Ride {
@@ -34,11 +34,10 @@ export class Ride {
   @Column()
   seats_available: number;
 
-  @Column()
-  @ManyToOne(() => Driver, driver => driver.id)
-  driver: string;
+  @ManyToOne(() => User, driver => driver.id)
+  driver: User;
 
-  @Column({ type: "money" })
+  @Column({ type: 'money' })
   price: number;
 
   @Column()

@@ -3,25 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '../entity/User';
 import bcrypt from 'bcrypt';
 import { validate } from 'class-validator';
-import jwt from 'jsonwebtoken';
 import { formatResponse } from '../helpers';
 import { Login } from '../validators/login';
-
-interface iPayload {
-  email: string;
-}
-interface iSignOptions {
-  expiresIn: string;
-  algorithm: string;
-}
-
-const encodeJWT = (
-  payload: iPayload,
-  privateKEY: string,
-  signOptions: iSignOptions
-): string => {
-  return jwt.sign(payload, privateKEY, signOptions);
-};
+import { signJWT, decodeJWT } from '../services/jwt';
 
 export class AuthController {
   private userRepository = getRepository(User);
@@ -55,13 +39,7 @@ export class AuthController {
         } else {
           const match = await bcrypt.compare(password, user.password);
           if (match) {
-            const payload = { email };
-            const signOptions = {
-              expiresIn: '12h',
-              algorithm: 'HS256'
-            };
-            const privateKEY = process.env.PRIVATE_KEY;
-            const token = encodeJWT(payload, privateKEY, signOptions);
+            const token = signJWT(email);
             return formatResponse({
               status: 200,
               data: {

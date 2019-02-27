@@ -10,7 +10,14 @@ export class UserController {
   async all(request: Request, response: Response, next: NextFunction) {
     try {
       const users = await this.userRepository.find();
-      return formatResponse({ status: 200, data: users, response });
+      if (users.length > 0) {
+        return formatResponse({ status: 200, data: users, response });
+      }
+      return formatResponse({
+        status: 404,
+        data: { message: 'No users found' },
+        response
+      });
     } catch (error) {
       return error;
     }

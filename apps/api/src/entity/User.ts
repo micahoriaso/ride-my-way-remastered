@@ -3,10 +3,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   TableInheritance,
-  BeforeInsert
+  BeforeInsert,
+  getRepository
 } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { IsEmail, Length, MinLength } from 'class-validator';
+import { IsEmail, Length, MinLength, Validate } from 'class-validator';
+import { IsUniqueEmail, IsUniquePhone } from '../validators/user';
 
 @Entity()
 @TableInheritance({
@@ -23,6 +25,7 @@ export class User {
   last_name?: string;
 
   @Column({ unique: true })
+  @Validate(IsUniqueEmail, { groups: ['create'] })
   @IsEmail(
     {},
     {
@@ -32,6 +35,7 @@ export class User {
   email: string;
 
   @Column({ unique: true })
+  @Validate(IsUniquePhone, { groups: ['create'] })
   @Length(10, 10, { message: 'Phone number must be 10 digits' })
   phone: string;
 

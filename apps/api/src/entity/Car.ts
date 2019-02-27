@@ -1,6 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn
+} from 'typeorm';
 import { IsDefined, Validate, Matches, Min, Max } from 'class-validator';
-import { IsUnique } from '../validators/car';
+import { IsUnique, IsUniqueOwner } from '../validators/car';
+import { User } from './User';
 
 @Entity()
 export class Car {
@@ -24,4 +31,9 @@ export class Car {
   @Min(1, { message: 'Capacity must be more than 0' })
   @Max(10, { message: 'Capacity cannot be more than 10' })
   capacity: number;
+
+  @Validate(IsUniqueOwner, { groups: ['create'] })
+  @OneToOne(type => User, owner => owner.id)
+  @JoinColumn()
+  owner: User;
 }
