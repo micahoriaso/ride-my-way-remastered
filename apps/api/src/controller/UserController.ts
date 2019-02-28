@@ -9,7 +9,9 @@ export class UserController {
 
   async all(request: Request, response: Response, next: NextFunction) {
     try {
-      const users = await this.userRepository.find();
+      const users = await this.userRepository.find({
+        relations: ['car']
+      });
       if (users.length > 0) {
         return formatResponse({ status: 200, data: users, response });
       }
@@ -25,7 +27,9 @@ export class UserController {
 
   async one(request: Request, response: Response, next: NextFunction) {
     try {
-      const user = await this.userRepository.findOne(request.params.id);
+      const user = await this.userRepository.findOne(request.params.id, {
+        relations: ['car']
+      });
       if (!user) {
         response.status(404);
         response.send({ message: 'Sorry, user not found!' });

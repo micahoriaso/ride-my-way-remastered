@@ -18,7 +18,7 @@ createConnection()
     Routes.forEach(route => {
       (app as any)[route.method](
         route.route,
-        route.authenticate ? checkJWT : passMiddleware,
+        route.authenticated ? checkJWT : passMiddleware,
         (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](
             req,

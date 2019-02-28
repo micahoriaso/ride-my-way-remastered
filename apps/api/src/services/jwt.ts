@@ -4,6 +4,10 @@ import { NextFunction, Request, Response, RequestHandler } from 'express';
 import { formatResponse } from '../helpers';
 import { User } from '../entity/User';
 
+export interface Authenticated {
+  decoded: any;
+}
+
 export const signJWT = (email: string): string => {
   const payload = { email };
   const privateKEY = process.env.PRIVATE_KEY;
@@ -34,10 +38,6 @@ export const decodeJWT = (token: string, response: Response) => {
     });
   }
 };
-
-interface Authenticated {
-  decoded: any;
-}
 
 export const checkJWT: RequestHandler = (
   request: Request & Authenticated,
@@ -72,5 +72,5 @@ export const getCurrentUser: any = async (decodedToken: any) => {
   const currentUser = await user.findOne({
     email: decodedToken.payload.email
   });
-  return currentUser.id;
+  return currentUser;
 };

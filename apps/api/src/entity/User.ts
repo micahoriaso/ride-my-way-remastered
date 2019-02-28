@@ -4,11 +4,13 @@ import {
   Column,
   TableInheritance,
   BeforeInsert,
-  getRepository
+  getRepository,
+  OneToOne
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { IsEmail, Length, MinLength, Validate } from 'class-validator';
 import { IsUniqueEmail, IsUniquePhone } from '../validators/user';
+import { Car } from '../entity/Car';
 
 @Entity()
 @TableInheritance({
@@ -42,6 +44,9 @@ export class User {
   @Column()
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
+
+  @OneToOne(type => Car, car => car.owner)
+  car?: Car;
 
   @BeforeInsert()
   hashPassword() {

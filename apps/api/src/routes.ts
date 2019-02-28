@@ -1,6 +1,7 @@
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { CarController } from './controller/CarController';
+import { RideController } from './controller/RideController';
 
 export const Routes = [
   {
@@ -44,34 +45,69 @@ export const Routes = [
     route: '/cars',
     controller: CarController,
     action: 'all',
-    authenticate: true
+    authenticated: true
   },
   {
     method: 'get',
     route: '/cars/:id',
     controller: CarController,
     action: 'one',
-    authenticate: true
+    authenticated: true
   },
   {
     method: 'post',
     route: '/cars',
     controller: CarController,
     action: 'save',
-    authenticate: true
+    authenticated: true
   },
   {
     method: 'delete',
     route: '/cars/:id',
     controller: CarController,
     action: 'remove',
-    authenticate: true
+    authenticated: true
   },
   {
     method: 'put',
     route: '/cars/:id',
     controller: CarController,
     action: 'update',
-    authenticate: true
+    authenticated: true
+  },
+  {
+    method: 'get',
+    route: '/rides',
+    controller: RideController,
+    action: 'all',
+    authenticated: true
+  },
+  {
+    method: 'get',
+    route: '/rides/:id',
+    controller: RideController,
+    action: 'one',
+    authenticated: true
+  },
+  {
+    method: 'post',
+    route: '/rides',
+    controller: RideController,
+    action: 'save',
+    authenticated: true
+  },
+  {
+    method: 'delete',
+    route: '/rides/:id',
+    controller: RideController,
+    action: 'remove',
+    authenticated: true
+  },
+  {
+    method: 'put',
+    route: '/rides/:id',
+    controller: RideController,
+    action: 'update',
+    authenticated: true
   }
 ];
