@@ -96,7 +96,11 @@ export class CarController {
     }
   }
 
-  async remove(request: Request, response: Response, next: NextFunction) {
+  async remove(
+    request: Request & Authenticated,
+    response: Response,
+    next: NextFunction
+  ) {
     const carToRemove = await this.carRepository.findOne(request.params.id);
     if (!carToRemove) {
       return formatResponse({ status: 404, error: 'Car not found', response });
@@ -109,9 +113,20 @@ export class CarController {
     }
   }
 
-  async update(request: Request, response: Response, next: NextFunction) {
+  async update(
+    request: Request & Authenticated,
+    response: Response,
+    next: NextFunction
+  ) {
     const { body } = request;
     const carToUpdate = await this.carRepository.findOne(request.params.id);
+    if (!carToUpdate) {
+      return formatResponse({
+        status: 404,
+        data: { message: 'Sorry, car not found!' },
+        response
+      });
+    }
     carToUpdate.registration = body.registration;
     carToUpdate.model = body.model;
     carToUpdate.capacity = body.capacity;

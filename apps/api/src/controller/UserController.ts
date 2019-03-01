@@ -10,7 +10,7 @@ export class UserController {
   async all(request: Request, response: Response, next: NextFunction) {
     try {
       const users = await this.userRepository.find({
-        relations: ['car']
+        relations: ['car', 'ride']
       });
       if (users.length > 0) {
         return formatResponse({ status: 200, data: users, response });
@@ -28,11 +28,14 @@ export class UserController {
   async one(request: Request, response: Response, next: NextFunction) {
     try {
       const user = await this.userRepository.findOne(request.params.id, {
-        relations: ['car']
+        relations: ['car', 'ride']
       });
       if (!user) {
-        response.status(404);
-        response.send({ message: 'Sorry, user not found!' });
+        return formatResponse({
+          status: 404,
+          data: { message: 'Sorry, user not found' },
+          response
+        });
         return;
       }
       return formatResponse({ status: 200, data: user, response });
@@ -64,7 +67,7 @@ export class UserController {
     }
     try {
       await this.userRepository.remove(userToRemove);
-      return formatResponse({ status: 200, data: 'User deleted', response });
+      return formatResponse({ status: 200, data: 'User deleted!', response });
     } catch (error) {
       return error;
     }

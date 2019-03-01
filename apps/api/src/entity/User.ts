@@ -5,12 +5,14 @@ import {
   TableInheritance,
   BeforeInsert,
   getRepository,
-  OneToOne
+  OneToOne,
+  OneToMany
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { IsEmail, Length, MinLength, Validate } from 'class-validator';
 import { IsUniqueEmail, IsUniquePhone } from '../validators/user';
 import { Car } from '../entity/Car';
+import { Ride } from '../entity/Ride';
 
 @Entity()
 @TableInheritance({
@@ -47,6 +49,9 @@ export class User {
 
   @OneToOne(type => Car, car => car.owner)
   car?: Car;
+
+  @OneToMany(type => Ride, ride => ride.driver)
+  ride?: Ride;
 
   @BeforeInsert()
   hashPassword() {

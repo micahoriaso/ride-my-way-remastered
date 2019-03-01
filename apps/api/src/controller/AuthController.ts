@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import { validate } from 'class-validator';
 import { formatResponse } from '../helpers';
 import { Login } from '../validators/login';
-import { signJWT, decodeJWT } from '../services/jwt';
+import { signJWT } from '../services/jwt';
 
 export class AuthController {
   private userRepository = getRepository(User);

@@ -12,9 +12,9 @@ export class RideController {
 
   async all(request: Request, response: Response, next: NextFunction) {
     try {
-      const cars = await this.rideRepository.find();
-      if (cars.length > 0) {
-        return formatResponse({ status: 200, data: cars, response });
+      const rides = await this.rideRepository.find({ relations: ['driver'] });
+      if (rides.length > 0) {
+        return formatResponse({ status: 200, data: rides, response });
       }
       return formatResponse({
         status: 404,
@@ -30,15 +30,17 @@ export class RideController {
 
   async one(request: Request, response: Response, next: NextFunction) {
     try {
-      const car = await this.rideRepository.findOne(request.params.id);
-      if (!car) {
+      const ride = await this.rideRepository.findOne(request.params.id, {
+        relations: ['driver']
+      });
+      if (!ride) {
         return formatResponse({
           status: 404,
           data: { message: 'Sorry, ride not found!' },
           response
         });
       }
-      return formatResponse({ status: 200, data: car, response });
+      return formatResponse({ status: 200, data: ride, response });
     } catch (error) {
       if (error.name === 'QueryFailedError') {
         return formatResponse({
