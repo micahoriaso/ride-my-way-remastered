@@ -88,7 +88,7 @@ export class RideController {
         });
       } else {
         ride.capacity = car.capacity;
-        ride.seats_available = car.capacity;
+        ride.seatsAvailable = car.capacity;
         await rideRepository.save(ride);
         return formatResponse({ status: 201, data: 'Ride created', response });
       }
@@ -123,7 +123,7 @@ export class RideController {
     rideToUpdate.pickup = body.pickup;
     rideToUpdate.dropoff = body.dropoff;
     rideToUpdate.capacity = body.capacity;
-    rideToUpdate.seats_available = body.seats_available;
+    rideToUpdate.seatsAvailable = body.seats_available;
     rideToUpdate.price = body.price;
     rideToUpdate.driver = currentUser;
     try {

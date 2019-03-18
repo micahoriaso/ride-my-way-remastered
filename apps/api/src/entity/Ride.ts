@@ -64,7 +64,7 @@ export class Ride {
   capacity: number;
 
   @Column()
-  seats_available: number;
+  seatsAvailable: number;
 
   @ManyToOne(() => User, driver => driver.id)
   @Validate(HasCar)
@@ -85,8 +85,8 @@ export class Ride {
   status: RideStatus;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }

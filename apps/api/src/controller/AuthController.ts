@@ -43,7 +43,7 @@ export class AuthController {
             return formatResponse({
               status: 200,
               data: {
-                message: `Welcome back, ${user.first_name} ${user.last_name}`,
+                message: `Welcome back, ${user.firstName}`,
                 token
               },
               response
@@ -77,8 +77,8 @@ export class AuthController {
     let user = new User();
     let userRepository = getRepository(User);
     user.email = body.email;
-    user.first_name = body.first_name || null;
-    user.last_name = body.last_name || null;
+    user.firstName = body.firstName || null;
+    user.lastName = body.lastName || null;
     user.password = body.password;
     user.phone = body.phone;
     try {
@@ -98,7 +98,7 @@ export class AuthController {
         return formatResponse({
           status: 201,
           data: {
-            message: 'Yaay! Welcome aboard'
+            message: `Ahoy! Welcome aboard, ${user.firstName}!`
           },
           response
         });

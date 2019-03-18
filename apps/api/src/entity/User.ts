@@ -9,7 +9,13 @@ import {
   OneToMany
 } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { IsEmail, Length, MinLength, Validate } from 'class-validator';
+import {
+  IsEmail,
+  Length,
+  MinLength,
+  Validate,
+  IsDefined
+} from 'class-validator';
 import { IsUniqueEmail, IsUniquePhone } from '../validators/user';
 import { Car } from '../entity/Car';
 import { Ride } from '../entity/Ride';
@@ -22,11 +28,13 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
-  first_name?: string;
+  @Column()
+  @IsDefined({ message: 'First name is required' })
+  firstName: string;
 
-  @Column({ nullable: true })
-  last_name?: string;
+  @Column()
+  @IsDefined({ message: 'Last name is required' })
+  lastName: string;
 
   @Column({ unique: true })
   @Validate(IsUniqueEmail, { groups: ['create'] })

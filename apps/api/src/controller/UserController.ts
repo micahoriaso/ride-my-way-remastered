@@ -76,8 +76,8 @@ export class UserController {
   async update(request: Request, response: Response, next: NextFunction) {
     const { body } = request;
     const userToUpdate = await this.userRepository.findOne(request.params.id);
-    userToUpdate.first_name = body.first_name;
-    userToUpdate.last_name = body.last_name;
+    userToUpdate.firstName = body.first_name;
+    userToUpdate.lastName = body.last_name;
     userToUpdate.email = body.email;
     try {
       const errors = await validate(userToUpdate, {

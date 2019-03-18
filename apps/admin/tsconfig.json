@@ -12,9 +12,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": [
+      "jest",
+      "node",
+      "prop-types",
+      "react",
+      "react-dom",
+      "react-redux",
+      "rebass__grid",
+      "styled-components",
+      "tapable",
+      "q"
+    ]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

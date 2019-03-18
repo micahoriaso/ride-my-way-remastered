@@ -5,9 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne
-} from "typeorm";
-import { User } from "./User";
-import { Ride } from "./Ride";
+} from 'typeorm';
+import { User } from './User';
+import { Ride } from './Ride';
 
 @Entity()
 export class RideRequest {
@@ -26,8 +26,8 @@ export class RideRequest {
   status: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
