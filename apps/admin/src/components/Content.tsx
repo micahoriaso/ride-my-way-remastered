@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Flex } from '@rebass/grid';
+import React, {Component} from 'react';
+import {Flex} from '@rebass/grid';
 import styled from 'styled-components';
 import Banner from './Banner';
 import BannerImage from './BannerImage';
-import { Container } from '../atoms/Container';
+import {Container} from '../atoms/Container';
 import PlainButton from '../atoms/Buttons/PlainButton';
 import Modal from '../atoms/Modal/Modal';
 import SignupForm from '../components/Forms/SignupForm';
@@ -38,7 +38,7 @@ class Content extends Component<{}, iState> {
   };
 
   render() {
-    const { showModal } = this.state;
+    const {showModal} = this.state;
     return (
       <React.Fragment>
         <StyledContent>
@@ -46,42 +46,19 @@ class Content extends Component<{}, iState> {
             <StyledFlex flexDirection="column" alignItems="center">
               <BannerImage />
               <Banner />
-              <PlainButton
-                bgColor="#4553ff"
-                className="myButton"
-                onClick={this.handleOpenModal}
-              >
+              <PlainButton bgColor="#4553ff" className="myButton" onClick={this.handleOpenModal}>
                 Join us
               </PlainButton>
             </StyledFlex>
           </Container>
         </StyledContent>
-        <Modal
-          isShown={showModal}
-          onClose={this.handleCloseModal}
-          size="medium"
-        >
+        <Modal isShown={showModal} onClose={this.handleCloseModal} size="medium">
           <SignupForm />
         </Modal>
       </React.Fragment>
     );
   }
 }
-// const Content: React.SFC = () => (
-//   <React.Fragment>
-//     <StyledContent>
-//       <Container>
-//         <StyledFlex flexDirection="column" alignItems="center">
-//           <BannerImage />
-//           <Banner />
-//           <PlainButton bgColor="#4553ff" className="myButton">
-//             Join us
-//           </PlainButton>
-//         </StyledFlex>
-//       </Container>
-//     </StyledContent>
-//   </React.Fragment>
-// );
 
 export default Content;
 

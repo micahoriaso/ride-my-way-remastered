@@ -6,14 +6,13 @@ interface iProps {
   bgColor?: string;
   className?: string;
   onClick?: () => void;
-  type?: string;
 }
 
 const Button: React.SFC<iProps> = props => {
-  const { className, children, onClick, type } = props;
+  const {className, children, onClick} = props;
   return (
     <React.Fragment>
-      <StyledDiv className={className} onClick={onClick} type={type}>
+      <StyledDiv className={className} onClick={onClick}>
         {children}
       </StyledDiv>
     </React.Fragment>

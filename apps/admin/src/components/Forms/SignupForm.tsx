@@ -1,9 +1,9 @@
-import React, { useState, useReducer } from 'react';
+import React, {useState, useReducer} from 'react';
 import axios from 'axios';
 import Button from '../../atoms/Buttons/PlainButton';
 import Input from '../../atoms/Inputs/TextInput';
 import styled from 'styled-components';
-import { Flex } from '@rebass/grid';
+import {Flex} from '@rebass/grid';
 import WelcomeImage from '../WelcomeImage';
 
 const SignUpForm = () => {
@@ -14,14 +14,14 @@ const SignUpForm = () => {
     phone: '',
     password: ''
   });
-  const { firstName, lastName, email, phone, password } = formData;
+  const {firstName, lastName, email, phone, password} = formData;
   const updateFormData = (event: React.FormEvent<HTMLInputElement>) =>
     setFormData({
       ...formData,
       [event.currentTarget.name]: event.currentTarget.value
     });
   const clearFieldError = (event: React.FormEvent<HTMLInputElement>) => {
-    const updatedError = { ...error };
+    const updatedError = {...error};
     updatedError[event.currentTarget.name] = null;
     dispatch({
       type: 'CLEAR_FIELD_ERROR',
@@ -45,7 +45,7 @@ const SignUpForm = () => {
   const signUpReducer = (state: any, action: any) => {
     switch (action.type) {
       case 'SIGNUP_STARTED': {
-        return { ...state, loading: true, success: false };
+        return {...state, loading: true, success: false};
       }
       case 'SIGNUP_SUCCESS': {
         return {
@@ -83,14 +83,11 @@ const SignUpForm = () => {
       }
     }
   };
-  const [{ loading, success, error, response }, dispatch] = useReducer(
-    signUpReducer,
-    initialState
-  );
+  const [{loading, success, error, response}, dispatch] = useReducer(signUpReducer, initialState);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch({ type: 'SIGNUP_STARTED' });
+    dispatch({type: 'SIGNUP_STARTED'});
     try {
       const response = await axios.post('/auth/signup', {
         firstName: firstName,
@@ -184,7 +181,7 @@ const SignUpForm = () => {
             }}
             error={error.password}
           />
-          <Button type="submit">Create your account</Button>
+          <Button>Create your account</Button>
         </StyledForm>
         <SignInPrompt>
           Already have an account? <SignIn>Log in.</SignIn>

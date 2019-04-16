@@ -6,7 +6,9 @@
   },
   "scripts": {
     "start": "lerna run start --parallel",
-    "install:all": "lerna exec yarn install --stream"
+    "install:all": "lerna exec yarn install --stream",
+    "upgrade:all": "lerna exec yarn upgrade --stream",
+    "update:all": "lerna exec yarn update --stream"
   },
   "dependencies": {
     "dotenv": "^6.2.0"
