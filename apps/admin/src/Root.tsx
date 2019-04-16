@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './routes/Home';
+import {App} from './routes';
 import GlobalStyle from './styles/globals';
 
 class Root extends React.Component {
@@ -7,7 +7,7 @@ class Root extends React.Component {
     return (
       <React.Fragment>
         <GlobalStyle />
-        <Home />
+        <App />
       </React.Fragment>
     );
   }

@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken';
-import { getRepository } from 'typeorm';
-import { NextFunction, Request, Response, RequestHandler } from 'express';
-import { formatResponse } from '../helpers';
-import { User } from '../entity/User';
+import {getRepository} from 'typeorm';
+import {NextFunction, Request, Response, RequestHandler} from 'express';
+import {formatResponse} from '../helpers';
+import {User} from '../entity/User';
 
 export interface Authenticated {
   decoded: any;
 }
 
 export const signJWT = (email: string): string => {
-  const payload = { email };
+  const payload = {email};
   const privateKEY = process.env.PRIVATE_KEY;
   const signOptions = {
     expiresIn: '12h',
@@ -29,21 +29,17 @@ export const verifyJWT = (token: string) => {
 
 export const decodeJWT = (token: string, response: Response) => {
   try {
-    return jwt.decode(token, { complete: true });
+    return jwt.decode(token, {complete: true});
   } catch (error) {
     return formatResponse({
       status: 401,
-      data: { message: 'Sorry, you dont have permission for this resource' },
+      data: {message: 'Sorry, you dont have permission for this resource'},
       response
     });
   }
 };
 
-export const checkJWT: RequestHandler = (
-  request: Request & Authenticated,
-  response: Response,
-  next: NextFunction
-) => {
+export const checkJWT: RequestHandler = (request: Request & Authenticated, response: Response, next: NextFunction) => {
   const token = request.headers.authorization;
 
   if (token) {
@@ -53,17 +49,14 @@ export const checkJWT: RequestHandler = (
   } else {
     return formatResponse({
       status: 401,
-      data: { message: 'Sorry, auth token is not supplied' },
+      data: {message: 'Sorry, auth token is not supplied'},
       response
     });
   }
 };
 
-export const passMiddleware: RequestHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const passMiddleware: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+  console.log(process.env.AUTH0_DOMAIN);
   next();
 };
 

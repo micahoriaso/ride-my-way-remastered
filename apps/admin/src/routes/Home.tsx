@@ -3,10 +3,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Content from '../components/Content';
 
-const Home = () => (
+interface iProps {
+  auth: any;
+}
+
+const Home: React.SFC<iProps> = ({auth}) => (
   <React.Fragment>
     <Header />
-    <Content />
+    <Content auth={auth} />
     <Footer />
   </React.Fragment>
 );

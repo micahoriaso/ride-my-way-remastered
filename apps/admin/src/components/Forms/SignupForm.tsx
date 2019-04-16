@@ -1,27 +1,25 @@
-import React, { useState, useReducer } from 'react';
+import React, {useState, useReducer} from 'react';
 import axios from 'axios';
 import Button from '../../atoms/Buttons/PlainButton';
 import Input from '../../atoms/Inputs/TextInput';
 import styled from 'styled-components';
-import { Flex } from '@rebass/grid';
+import {Flex} from '@rebass/grid';
 import WelcomeImage from '../WelcomeImage';
+import Auth from '../../Auth/Auth';
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
-    phone: '',
     password: ''
   });
-  const { firstName, lastName, email, phone, password } = formData;
+  const {email, password} = formData;
   const updateFormData = (event: React.FormEvent<HTMLInputElement>) =>
     setFormData({
       ...formData,
       [event.currentTarget.name]: event.currentTarget.value
     });
   const clearFieldError = (event: React.FormEvent<HTMLInputElement>) => {
-    const updatedError = { ...error };
+    const updatedError = {...error};
     updatedError[event.currentTarget.name] = null;
     dispatch({
       type: 'CLEAR_FIELD_ERROR',
@@ -33,9 +31,6 @@ const SignUpForm = () => {
     loading: false,
     success: false,
     error: {
-      firstName: null,
-      lastName: null,
-      phone: null,
       email: null,
       password: null
     },
@@ -45,7 +40,7 @@ const SignUpForm = () => {
   const signUpReducer = (state: any, action: any) => {
     switch (action.type) {
       case 'SIGNUP_STARTED': {
-        return { ...state, loading: true, success: false };
+        return {...state, loading: true, success: false};
       }
       case 'SIGNUP_SUCCESS': {
         return {
@@ -54,9 +49,6 @@ const SignUpForm = () => {
           success: true,
           response: action.response,
           error: {
-            firstName: null,
-            lastName: null,
-            phone: null,
             email: null,
             password: null
           }
@@ -83,34 +75,35 @@ const SignUpForm = () => {
       }
     }
   };
-  const [{ loading, success, error, response }, dispatch] = useReducer(
-    signUpReducer,
-    initialState
-  );
+  const [{loading, success, error, response}, dispatch] = useReducer(signUpReducer, initialState);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch({ type: 'SIGNUP_STARTED' });
+    dispatch({type: 'SIGNUP_STARTED'});
     try {
-      const response = await axios.post('/auth/signup', {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        password: password
-      });
+      const auth = new Auth();
+
+      await auth.login(email, password);
+      // const response = await axios.post('/auth/signup', {
+      //   firstName: firstName,
+      //   lastName: lastName,
+      //   email: email,
+      //   phone: phone,
+      //   password: password
+      // });
       dispatch({
         type: 'SIGNUP_SUCCESS',
         response: response.data.data.message
       });
     } catch (error) {
-      const newError: any = {};
-      error.response.data.error.errors.forEach((error: any) => {
-        newError[error.property] = Object.values(error.constraints)[0];
-      });
+      // const newError: any = {};
+      // error.response.data.error.errors.forEach((error: any) => {
+      //   newError[error.property] = Object.values(error.constraints)[0];
+      // });
       dispatch({
         type: 'SIGNUP_ERROR',
-        error: newError
+        // error: newError
+        error: error
       });
     }
   };
@@ -133,7 +126,7 @@ const SignUpForm = () => {
         <h3>Signup</h3>
         {response}
         <StyledForm onSubmit={handleSubmit}>
-          <Input
+          {/* <Input
             name="firstName"
             label="First Name"
             value={firstName}
@@ -152,7 +145,7 @@ const SignUpForm = () => {
               clearFieldError(e);
             }}
             error={error.lastName}
-          />
+          /> */}
           <Input
             name="email"
             label="Email"
@@ -163,7 +156,7 @@ const SignUpForm = () => {
             }}
             error={error.email}
           />
-          <Input
+          {/* <Input
             name="phone"
             label="Phone"
             value={phone}
@@ -172,7 +165,7 @@ const SignUpForm = () => {
               clearFieldError(e);
             }}
             error={error.phone}
-          />
+          /> */}
           <Input
             name="password"
             label="Password"

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Flex } from '@rebass/grid';
+import React, {Component} from 'react';
+import {Flex} from '@rebass/grid';
 import styled from 'styled-components';
 import Banner from './Banner';
 import BannerImage from './BannerImage';
-import { Container } from '../atoms/Container';
+import {Container} from '../atoms/Container';
 import PlainButton from '../atoms/Buttons/PlainButton';
 import Modal from '../atoms/Modal/Modal';
 import SignupForm from '../components/Forms/SignupForm';
@@ -12,11 +12,21 @@ interface iState {
   showModal: boolean;
 }
 
-class Content extends Component<{}, iState> {
+interface iProps {
+  auth: any;
+}
+
+class Content extends Component<iProps, iState> {
   state: iState = {
     showModal: false
   };
+  login() {
+    this.props.auth.login();
+  }
 
+  logout() {
+    this.props.auth.logout();
+  }
   handleOpenModal = () => {
     this.setState({
       showModal: true
@@ -38,7 +48,8 @@ class Content extends Component<{}, iState> {
   };
 
   render() {
-    const { showModal } = this.state;
+    const {showModal} = this.state;
+    const {isAuthenticated} = this.props.auth;
     return (
       <React.Fragment>
         <StyledContent>
@@ -46,21 +57,13 @@ class Content extends Component<{}, iState> {
             <StyledFlex flexDirection="column" alignItems="center">
               <BannerImage />
               <Banner />
-              <PlainButton
-                bgColor="#4553ff"
-                className="myButton"
-                onClick={this.handleOpenModal}
-              >
-                Join us
+              <PlainButton bgColor="#4553ff" className="myButton" onClick={this.handleOpenModal}>
+                Login
               </PlainButton>
             </StyledFlex>
           </Container>
         </StyledContent>
-        <Modal
-          isShown={showModal}
-          onClose={this.handleCloseModal}
-          size="medium"
-        >
+        <Modal isShown={showModal} onClose={this.handleCloseModal} size="medium">
           <SignupForm />
         </Modal>
       </React.Fragment>
