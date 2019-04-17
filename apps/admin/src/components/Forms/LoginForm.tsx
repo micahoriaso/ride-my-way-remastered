@@ -6,15 +6,12 @@ import styled from 'styled-components';
 import { Flex } from '@rebass/grid';
 import WelcomeImage from '../WelcomeImage';
 
-const SignUpForm = () => {
+const LoginForm = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
-    phone: '',
     password: ''
   });
-  const { firstName, lastName, email, phone, password } = formData;
+  const { email, password } = formData;
   const updateFormData = (event: React.FormEvent<HTMLInputElement>) =>
     setFormData({
       ...formData,
@@ -33,9 +30,6 @@ const SignUpForm = () => {
     loading: false,
     success: false,
     error: {
-      firstName: null,
-      lastName: null,
-      phone: null,
       email: null,
       password: null
     },
@@ -54,9 +48,6 @@ const SignUpForm = () => {
           success: true,
           response: action.response,
           error: {
-            firstName: null,
-            lastName: null,
-            phone: null,
             email: null,
             password: null
           }
@@ -92,11 +83,8 @@ const SignUpForm = () => {
     event.preventDefault();
     dispatch({ type: 'SIGNUP_STARTED' });
     try {
-      const response = await axios.post('/auth/signup', {
-        firstName: firstName,
-        lastName: lastName,
+      const response = await axios.post('/auth/login', {
         email: email,
-        phone: phone,
         password: password
       });
       dispatch({
@@ -105,13 +93,14 @@ const SignUpForm = () => {
       });
     } catch (error) {
       const newError: any = {};
-      error.response.data.error.errors.forEach((error: any) => {
-        newError[error.property] = Object.values(error.constraints)[0];
-      });
-      dispatch({
-        type: 'SIGNUP_ERROR',
-        error: newError
-      });
+      console.log(error);
+      //   error.response.data.error.errors.forEach((error: any) => {
+      //     newError[error.property] = Object.values(error.constraints)[0];
+      //   });
+      //   dispatch({
+      //     type: 'SIGNUP_ERROR',
+      //     error: newError
+      //   });
     }
   };
 
@@ -130,29 +119,9 @@ const SignUpForm = () => {
   ) : (
     <React.Fragment>
       <Flex width={1 / 2} m="auto" flexDirection="column" alignItems="center">
-        <h3>Signup</h3>
+        <h3>Login</h3>
         {response}
         <StyledForm onSubmit={handleSubmit}>
-          <Input
-            name="firstName"
-            label="First Name"
-            value={firstName}
-            onChange={e => {
-              updateFormData(e);
-              clearFieldError(e);
-            }}
-            error={error.firstName}
-          />
-          <Input
-            name="lastName"
-            label="Last Name"
-            value={lastName}
-            onChange={e => {
-              updateFormData(e);
-              clearFieldError(e);
-            }}
-            error={error.lastName}
-          />
           <Input
             name="email"
             label="Email"
@@ -162,16 +131,6 @@ const SignUpForm = () => {
               clearFieldError(e);
             }}
             error={error.email}
-          />
-          <Input
-            name="phone"
-            label="Phone"
-            value={phone}
-            onChange={e => {
-              updateFormData(e);
-              clearFieldError(e);
-            }}
-            error={error.phone}
           />
           <Input
             name="password"
@@ -184,17 +143,17 @@ const SignUpForm = () => {
             }}
             error={error.password}
           />
-          <Button>Create your account</Button>
+          <Button>Log in</Button>
         </StyledForm>
         <SignInPrompt>
-          Already have an account? <SignIn>Log in.</SignIn>
+          Don't have an account? <SignIn>Sign up.</SignIn>
         </SignInPrompt>
       </Flex>
     </React.Fragment>
   );
 };
 
-export default SignUpForm;
+export default LoginForm;
 
 export const SignInPrompt = styled.div`
   margin-top: 30px;
